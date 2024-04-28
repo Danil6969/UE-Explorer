@@ -213,6 +213,8 @@ namespace UEExplorer
                     "Engine.RB_BodySetup.VertexData:Vector",
                     "Engine.SequenceAction.Targets:ObjectProperty",
                     "Engine.SequenceOp.InputLinks:StructProperty",
+                    "Engine.SequenceOp.LinkedVariables:ObjectProperty",
+                    "Engine.SequenceOp.Links:StructProperty",
                     "Engine.SequenceOp.OutputLinks:StructProperty",
                     "Engine.SequenceOp.VariableLinks:StructProperty",
                     "Engine.SkeletalMesh.bEnableShadowCasting:BoolProperty",
@@ -224,6 +226,11 @@ namespace UEExplorer
                     "Engine.SoundMode.SoundClassEffects:StructProperty",
                     "Engine.SoundNode.ChildNodes:ObjectProperty",
                     "Engine.SoundNodeMixer.InputVolume:FloatProperty",
+                    "Engine.Weapon.FireInterval:FloatProperty",
+                    "Engine.Weapon.FiringStatesArray:NameProperty",
+                    "Engine.Weapon.Spread:FloatProperty",
+                    "Engine.Weapon.WeaponFireTypes:NameProperty",
+                    "Engine.Weapon.WeaponProjectiles:ObjectProperty",
                     "Engine.WorldInfo.ClientDestroyedActorContent:ObjectProperty",
                     "XInterface.GUIComponent.Controls:ObjectProperty"
                 };
