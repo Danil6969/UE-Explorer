@@ -15,7 +15,7 @@
 		/// Required method for Designer support - do not modify 
 		/// the contents of this method with the code editor.
 		/// </summary>
-		protected override void InitializeComponent()
+		protected void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Label label4;
@@ -116,8 +116,9 @@
             this.TextEditorPanel = new UEExplorer.UI.Tabs.TextEditorPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.ToolStrip_Content = new System.Windows.Forms.ToolStrip();
-            this.PrevButton = new System.Windows.Forms.ToolStripButton();
+            this.PrevButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.NextButton = new System.Windows.Forms.ToolStripButton();
+            this.recentToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.ExportButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.SearchBox = new System.Windows.Forms.ToolStripTextBox();
@@ -826,7 +827,7 @@
             // _SearchIcon
             // 
             resources.ApplyResources(this._SearchIcon, "_SearchIcon");
-            this._SearchIcon.BackgroundImage = global::UEExplorer.Properties.Resources.search;
+            this._SearchIcon.Image = global::UEExplorer.Properties.Resources.search;
             this._SearchIcon.Name = "_SearchIcon";
             this._SearchIcon.TabStop = false;
             // 
@@ -970,6 +971,7 @@
             this._Tools_StripDropDownButton});
             this.ToolStrip_Main.Name = "ToolStrip_Main";
             this.ToolStrip_Main.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.ToolStrip_Main.TabStop = true;
             this.ToolStrip_Main.Paint += new System.Windows.Forms.PaintEventHandler(this.ToolStrip_Content_Paint);
             // 
             // SearchByObjectGroupButton
@@ -984,8 +986,9 @@
             // SearchObjectTextBox
             // 
             this.SearchObjectTextBox.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.SearchObjectTextBox.Name = "SearchObjectTextBox";
+            this.SearchObjectTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.SearchObjectTextBox, "SearchObjectTextBox");
+            this.SearchObjectTextBox.Name = "SearchObjectTextBox";
             this.SearchObjectTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchObjectTextBox_KeyPress);
             // 
             // _Tools_StripDropDownButton
@@ -1089,6 +1092,7 @@
             this.ToolStrip_Content.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PrevButton,
             this.NextButton,
+            this.recentToolStripDropDownButton,
             this.ExportButton,
             this.toolStripSeparator1,
             this.SearchBox,
@@ -1106,7 +1110,9 @@
             this.PrevButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.PrevButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             resources.ApplyResources(this.PrevButton, "PrevButton");
+            this.PrevButton.Image = global::UEExplorer.Properties.Resources.Backwards;
             this.PrevButton.Name = "PrevButton";
+            this.PrevButton.ShowDropDownArrow = false;
             this.PrevButton.Click += new System.EventHandler(this.ToolStripButton_Backward_Click);
             // 
             // NextButton
@@ -1114,8 +1120,18 @@
             this.NextButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.NextButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             resources.ApplyResources(this.NextButton, "NextButton");
+            this.NextButton.Image = global::UEExplorer.Properties.Resources.Forwards;
             this.NextButton.Name = "NextButton";
             this.NextButton.Click += new System.EventHandler(this.ToolStripButton_Forward_Click);
+            // 
+            // recentToolStripDropDownButton
+            // 
+            this.recentToolStripDropDownButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.recentToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.recentToolStripDropDownButton, "recentToolStripDropDownButton");
+            this.recentToolStripDropDownButton.Name = "recentToolStripDropDownButton";
+            this.recentToolStripDropDownButton.DropDownOpening += new System.EventHandler(this.RecentToolStripDropDownButton_DropDownOpening);
+            this.recentToolStripDropDownButton.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.RecentToolStripDropDownButton_DropDownItemClicked);
             // 
             // ExportButton
             // 
@@ -1129,12 +1145,13 @@
             // toolStripSeparator1
             // 
             resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
-            this.toolStripSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.toolStripSeparator1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Paint += new System.Windows.Forms.PaintEventHandler(this.ToolStripSeparator1_Paint);
             // 
             // SearchBox
             // 
+            this.SearchBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.SearchBox, "SearchBox");
             this.SearchBox.Name = "SearchBox";
             this.SearchBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchBox_KeyPress_1);
@@ -1153,14 +1170,14 @@
             // 
             this.toolStripSeparator4.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
-            this.toolStripSeparator4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.toolStripSeparator4.ForeColor = System.Drawing.SystemColors.ControlText;
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolStripSeparator4.Paint += new System.Windows.Forms.PaintEventHandler(this.ToolStripSeparator1_Paint);
             // 
             // toolStripSeparator3
             // 
-            this.toolStripSeparator3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.toolStripSeparator3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
             this.toolStripSeparator3.Paint += new System.Windows.Forms.PaintEventHandler(this.ToolStripSeparator1_Paint);
@@ -1171,6 +1188,7 @@
             this.Label_ObjectName.BackColor = System.Drawing.Color.Transparent;
             this.Label_ObjectName.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.Label_ObjectName.Name = "Label_ObjectName";
+            this.Label_ObjectName.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             resources.ApplyResources(this.Label_ObjectName, "Label_ObjectName");
             // 
             // ViewTools
@@ -1194,10 +1212,11 @@
             // UC_PackageExplorer
             // 
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Controls.Add(this.splitContainer1);
             this.Name = "UC_PackageExplorer";
+            this.Load += new System.EventHandler(this.UC_PackageExplorer_Load);
             filterPanel.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -1260,8 +1279,6 @@
 		internal System.Windows.Forms.TabPage TabPage_Deps;
 		private System.Windows.Forms.DataGridView DataGridView_NameTable;
 		private System.Windows.Forms.ToolStripButton FindButton;
-		private System.Windows.Forms.ToolStripButton NextButton;
-		private System.Windows.Forms.ToolStripButton PrevButton;
 		private System.Windows.Forms.Integration.ElementHost WPFHost;
 		private TextEditorPanel TextEditorPanel;
 		private System.Windows.Forms.DataGridView DataGridView_GenerationsTable;
@@ -1348,5 +1365,8 @@
         private System.Windows.Forms.ToolStripMenuItem ReloadButton;
         private System.Windows.Forms.ToolStripButton SearchByObjectGroupButton;
         private System.Windows.Forms.CheckBox _CheckBox_ToggleHierachy;
-	}
+        private System.Windows.Forms.ToolStripDropDownButton PrevButton;
+        private System.Windows.Forms.ToolStripButton NextButton;
+        private System.Windows.Forms.ToolStripDropDownButton recentToolStripDropDownButton;
+    }
 }

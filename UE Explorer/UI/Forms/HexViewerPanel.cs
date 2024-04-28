@@ -2,14 +2,16 @@ using System.Windows.Forms;
 
 namespace UEExplorer.UI.Forms
 {
-    public class HexViewerPanel : Panel
+    public partial class HexViewerPanel : UserControl
     {
         public HexViewerPanel()
         {
-            SetStyle( ControlStyles.UserPaint, true );
-            SetStyle( ControlStyles.AllPaintingInWmPaint, true );
-            SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
-            SetStyle( ControlStyles.ResizeRedraw, true );
+            InitializeComponent();
+
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.ResizeRedraw, true);
         }
     }
 }

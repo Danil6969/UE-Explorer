@@ -18,36 +18,37 @@ namespace UEExplorer.UI.Tabs
 		{
 		}*/
 
-		/// <summary>
-		/// Called when the Tab is added to the chain.
-		/// </summary>
-		protected override void TabCreated()
+		public UC_UClassFile()
+		{
+			InitializeComponent();
+		}
+
+        private void UC_UClassFile_Load(object sender, EventArgs e)
 		{
 			string langPath = Path.Combine( Application.StartupPath, "Config", "UnrealScript.xshd" );
 			if( File.Exists( langPath ) )
 			{
 				try
 				{
-					_MyTextEditor1.textEditor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load( 
+					_MyTextEditor1.TextEditor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load( 
 						new System.Xml.XmlTextReader( langPath ), 
 						ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance 
 					);
 				}
-				catch( Exception e )
+				catch( Exception exc )
 				{
-					ExceptionDialog.Show( e.GetType().Name, e ); 
+					ExceptionDialog.Show( e.GetType().Name, exc ); 
 				}
 			}
-			base.TabCreated();
 		}
 
 		public void PostInitialize()
 		{
-			_MyTextEditor1.textEditor.IsReadOnly = false;
-			_MyTextEditor1.textEditor.Load( FileName );
+			_MyTextEditor1.TextEditor.IsReadOnly = false;
+			_MyTextEditor1.TextEditor.Load( FileName );
 		}
 
-		protected override void InitializeComponent()
+		protected void InitializeComponent()
 		{
 			this._WpfHost = new System.Windows.Forms.Integration.ElementHost();
 			this._MyTextEditor1 = new UEExplorer.UI.Tabs.TextEditorPanel();
@@ -86,14 +87,15 @@ namespace UEExplorer.UI.Tabs
 			this.Controls.Add( this._EditorLayout );
 			this.Name = "UC_UClassFile";
 			this.Size = new System.Drawing.Size( 1312, 584 );
-			this._EditorLayout.ResumeLayout( false );
+			this.Load += new System.EventHandler(this.UC_UClassFile_Load);
+            this._EditorLayout.ResumeLayout( false );
 			this.ResumeLayout( false );
 
 		}
 
 		public override void TabSave()
 		{
-			_MyTextEditor1.textEditor.Save( FileName );
+			_MyTextEditor1.TextEditor.Save( FileName );
 		}
 
 		public override void TabFind()
@@ -111,12 +113,12 @@ namespace UEExplorer.UI.Tabs
 		{
 			int fails = 0;
 
-			var currentIndex = editor.textEditor.CaretOffset;
-			if( currentIndex >= editor.textEditor.Text.Length )
+			var currentIndex = editor.TextEditor.CaretOffset;
+			if( currentIndex >= editor.TextEditor.Text.Length )
 				return;
 
 			searchAgain:
-			int textIndex = editor.textEditor.Text.IndexOf( text, currentIndex, StringComparison.OrdinalIgnoreCase );
+			int textIndex = editor.TextEditor.Text.IndexOf( text, currentIndex, StringComparison.OrdinalIgnoreCase );
 			if( textIndex == -1 )
 			{
 				currentIndex = 0;
@@ -127,12 +129,12 @@ namespace UEExplorer.UI.Tabs
 				goto searchAgain;
 			}
 
-			var line = editor.textEditor.TextArea.Document.GetLocation( textIndex );
+			var line = editor.TextEditor.TextArea.Document.GetLocation( textIndex );
 	
-			editor.textEditor.ScrollTo( line.Line, line.Column );
-			editor.textEditor.Select( textIndex, text.Length );
+			editor.TextEditor.ScrollTo( line.Line, line.Column );
+			editor.TextEditor.Select( textIndex, text.Length );
 
-			editor.textEditor.CaretOffset = textIndex + text.Length;
+			editor.TextEditor.CaretOffset = textIndex + text.Length;
 		}
 	}
 }

@@ -179,7 +179,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAAK
-        LAAAAk1TRnQBSQFMAgEBLAEAAbQBBgG0AQYBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        LAAAAk1TRnQBSQFMAgEBLAEAAVwBBwFcAQcBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAAcADAAEBAQABCAYAATAYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -706,7 +706,7 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="exportDecompiledClassesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>149, 22</value>
   </data>
   <data name="exportDecompiledClassesToolStripMenuItem.Text" xml:space="preserve">
     <value>Export &amp;Classes</value>
@@ -715,7 +715,7 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="exportScriptClassesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>149, 22</value>
   </data>
   <data name="exportScriptClassesToolStripMenuItem.Text" xml:space="preserve">
     <value>Export &amp;Scripts</value>
@@ -1797,9 +1797,6 @@
   <data name="_SearchIcon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
-  <data name="_SearchIcon.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
   <data name="_SearchIcon.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 439</value>
   </data>
@@ -2241,6 +2238,9 @@
   <data name="SearchByObjectGroupButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 25</value>
   </data>
+  <data name="SearchObjectTextBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
   <data name="SearchObjectTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>205, 28</value>
   </data>
@@ -2257,7 +2257,7 @@
     <value>232, 22</value>
   </data>
   <data name="findNextToolStripMenuItem.Text" xml:space="preserve">
-    <value>Find Next</value>
+    <value>&amp;Find Next</value>
   </data>
   <data name="findInDocumentToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2269,7 +2269,7 @@
     <value>232, 22</value>
   </data>
   <data name="findInDocumentToolStripMenuItem.Text" xml:space="preserve">
-    <value>Find in Document</value>
+    <value>Find in &amp;Document</value>
   </data>
   <data name="findInClassesToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2281,7 +2281,7 @@
     <value>232, 22</value>
   </data>
   <data name="findInClassesToolStripMenuItem.Text" xml:space="preserve">
-    <value>Find in Classes...</value>
+    <value>Find in &amp;Classes...</value>
   </data>
   <data name="toolStripMenuItem1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
@@ -2290,7 +2290,7 @@
     <value>207, 22</value>
   </data>
   <data name="toolStripMenuItem1.Text" xml:space="preserve">
-    <value>Find</value>
+    <value>&amp;Find</value>
   </data>
   <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 6</value>
@@ -2305,7 +2305,7 @@
     <value>207, 22</value>
   </data>
   <data name="viewBufferToolStripMenuItem.Text" xml:space="preserve">
-    <value>View Buffer</value>
+    <value>View &amp;Buffer</value>
   </data>
   <data name="ReloadButton.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
@@ -2314,10 +2314,10 @@
     <value>207, 22</value>
   </data>
   <data name="ReloadButton.Text" xml:space="preserve">
-    <value>Reload</value>
+    <value>&amp;Reload</value>
   </data>
   <data name="_Tools_StripDropDownButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 25</value>
+    <value>54, 25</value>
   </data>
   <data name="_Tools_StripDropDownButton.Text" xml:space="preserve">
     <value>&amp;Tools</value>
@@ -2329,7 +2329,7 @@
     <value>323, 28</value>
   </data>
   <data name="ToolStrip_Main.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;ToolStrip_Main.Name" xml:space="preserve">
     <value>ToolStrip_Main</value>
@@ -2475,26 +2475,8 @@
   <data name="PrevButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="PrevButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIkSURBVDhPrZBdSFNxGMZPQzsts/xYbeiE9KRZOcssCxVa
-        bDK7CbKLwouBpIYGFVaTIlxYROEaLJiNoKgc3TStLffBhmc0y0LDCyWt4WhRRLdFdePFU/+/52Ob4VUP
-        PLw37/N7Xl4mVQcjeuhjK1tYXS4xfGjKBEf8Gh4v2OCY7YZ16jDaojrUedUw+Q3/hojhK/O9GE664Jq3
-        4Pp0K869qsepWLVk81glKu5r0iFi+OrcBTyI98M+04mLb4xwx634vfgDnsTNNEh7dAe2DXIyhAAa+Ro4
-        3/Wg/20Lzr7ci6EPlyGK/+JOA3THdGgYrKWWAB0TRlheH6ALqeHPP9/j/ESDFO58UYXWaDmO8RyqBjgZ
-        cHq8dlmYiLT7P92h9iad8Hy8jSNjpWgKa1FoZQVASE/DfZPNQmxlGcPFqA+poepTCgDvEiDzgl+L32kj
-        8VDCjkeJW7i3MIA9QRV2BvKR15stA8yRSgnyMAUS/eqBKaKFIVyE/aGN2BUowHb/BpT41mLrpTIZsM+t
-        pmHxSc45i4AAniTvoiZQiOq/raXPc6D1KVFgZ8Gd2CwDmt0GHA1yOM5vkZ50Y/YMBfDf/KgYXU9bNV4W
-        uSMKqLryZACRsksBzqZGU0ArPYmc2zLeCF2wCMW+Nch/mgXlMIPsk0x6WBSB1Nl2o8y1jj6pfDSXnrvp
-        2WrkjKwC62Cg6shozhSBEJf0aOhk2xXIMi81ihZW/5cY5g9LbPBmKNnQ9AAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="PrevButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
   <data name="PrevButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 25</value>
+    <value>20, 21</value>
   </data>
   <data name="PrevButton.Text" xml:space="preserve">
     <value>Backward</value>
@@ -2502,35 +2484,26 @@
   <data name="NextButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="NextButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIGSURBVDhPY0AGjrsd/jscwo+hSjEBSDMIe552/z/xVsv/
-        ZXd6/k+8nPW//rTf/8T9uv/NNor/d9/qjN0QmOaG6+X/1z6Y8X/G9bL/beei/hcftfqffUgPjuP2avxX
-        myeBaghMc/O10v8LbjX977uUBtew9eF0FANAOGW/9n/NacoIQ0CabfYZ/p96teh/05mg/wVHTMEKL77Z
-        9x8EHn+5gWJA1iHd/3bLpf5bTzNGGJB6zOV/2XF7FIXtZ0P/f/v9CcWQtIM6/6P2q/4P36f8X6dbGWFA
-        3mFjFM0wvOZuJ9gAEHj0+TpYLHCv4n/XXTL/hevZoQbscABLTLiYBFWKG9z7fPW/yy7p/1Y7xP+L1HFC
-        DdhIvAHbnq74b7Jd5L/+NsH/AuWsCAPidmvAne2+WwaMI/ep/p9+rQyq9f//jU+WgTVrbeX/L7uJ6796
-        lRLCAPMl4mDNsEACGTAFGK0wANKsB7RVcTP3f5lNnP+F+tj/KycrIAzwWOL8P3i78v+IfSrwQLrz6Qpc
-        s9oWPrCtEhvZ//OuY/ovkimAMAAEODOZ/iv3iP933SYDD6Sis7H/O65Wgm2V3sTxX3A9y3/OtQz/WdMZ
-        UDXDAMgQsx6j/0ozeMCBpLqFF+xcsQ1s/7nXMf5nn8jwXyQVzWZ0ADIEhGWLJMA0ewrTf5Y4iI0wDFVK
-        LcDAAACRa+/klVaPTQAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="NextButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
   <data name="NextButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 25</value>
+    <value>23, 21</value>
   </data>
   <data name="NextButton.Text" xml:space="preserve">
     <value>Forward</value>
+  </data>
+  <data name="recentToolStripDropDownButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="recentToolStripDropDownButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>13, 21</value>
+  </data>
+  <data name="recentToolStripDropDownButton.ToolTipText" xml:space="preserve">
+    <value>History</value>
   </data>
   <data name="ExportButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="ExportButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 25</value>
+    <value>44, 21</value>
   </data>
   <data name="ExportButton.Text" xml:space="preserve">
     <value>Save</value>
@@ -2547,17 +2520,20 @@
   <data name="SearchBox.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="SearchBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
   <data name="SearchBox.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="SearchBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 28</value>
+    <value>140, 24</value>
   </data>
   <data name="FindButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="FindButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 25</value>
+    <value>40, 21</value>
   </data>
   <data name="FindButton.Text" xml:space="preserve">
     <value>Find</value>
@@ -2569,10 +2545,10 @@
     <value>6, 28</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 28</value>
+    <value>6, 24</value>
   </data>
   <data name="Label_ObjectName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 25</value>
+    <value>44, 21</value>
   </data>
   <data name="Label_ObjectName.Text" xml:space="preserve">
     <value>Object</value>
@@ -2605,13 +2581,16 @@
     <value>No</value>
   </data>
   <data name="ViewTools.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 25</value>
+    <value>45, 21</value>
   </data>
   <data name="ViewTools.Text" xml:space="preserve">
     <value>View</value>
   </data>
   <data name="ToolStrip_Content.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
+  </data>
+  <data name="ToolStrip_Content.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="ToolStrip_Content.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>Yes</value>
@@ -2746,7 +2725,7 @@
     <value>58</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>1312, 555</value>
@@ -2911,19 +2890,25 @@
     <value>TextEditorPanel</value>
   </data>
   <data name="&gt;&gt;TextEditorPanel.Type" xml:space="preserve">
-    <value>WindowsFormsIntegration.Design.HostedComponent, WindowsFormsIntegration.Design, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>WindowsFormsIntegration.Design.HostedComponent, WindowsFormsIntegration.Design, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="&gt;&gt;PrevButton.Name" xml:space="preserve">
     <value>PrevButton</value>
   </data>
   <data name="&gt;&gt;PrevButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;NextButton.Name" xml:space="preserve">
     <value>NextButton</value>
   </data>
   <data name="&gt;&gt;NextButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;recentToolStripDropDownButton.Name" xml:space="preserve">
+    <value>recentToolStripDropDownButton</value>
+  </data>
+  <data name="&gt;&gt;recentToolStripDropDownButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ExportButton.Name" xml:space="preserve">
     <value>ExportButton</value>
@@ -2983,6 +2968,6 @@
     <value>UC_PackageExplorer</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>UEExplorer.UI.Tabs.UserControl_Tab, UE Explorer, Version=1.2.5.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>UEExplorer.UI.Tabs.UserControl_Tab, UEExplorer, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

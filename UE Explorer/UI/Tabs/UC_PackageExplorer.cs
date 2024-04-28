@@ -6,8 +6,10 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Storm.TabControl;
 using UEExplorer.Properties;
 using UEExplorer.UI.Forms;
 using UEExplorer.UI.Nodes;
@@ -30,61 +32,64 @@ namespace UEExplorer.UI.Tabs
         /// </summary>
         private UnrealPackage _UnrealPackage;
 
-        public override void TabInitialize()
+        public UC_PackageExplorer()
         {
-            splitContainer1.SplitterDistance = Settings.Default.PackageExplorer_SplitterDistance;
-            base.TabInitialize();
+            InitializeComponent();
         }
 
-        /// <summary>
-        /// Called when the Tab is added to the chain.
-        /// </summary>
-        protected override void TabCreated()
-        {						
-            var langPath = Path.Combine( Application.StartupPath, "Config", "UnrealScript.xshd" );
-            if( File.Exists( langPath ) )
-            {
-                try
-                {
-                    TextEditorPanel.textEditor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load( 
-                        new System.Xml.XmlTextReader( langPath ), 
-                        ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance 
-                    );
-                    TextEditorPanel.searchWiki.Click += SearchWiki_Click;
-                    TextEditorPanel.searchDocument.Click += SearchDocument_Click;
-                    TextEditorPanel.searchPackage.Click += SearchClasses_Click;
-                    TextEditorPanel.searchObject.Click += SearchObject_Click;
-                    TextEditorPanel.textEditor.ContextMenuOpening += ContextMenu_ContextMenuOpening;
-                    TextEditorPanel.copy.Click += Copy_Click;
+        public UC_PackageExplorer(string fileName)
+        {
+            FileName = fileName;
 
-                    // Fold all { } blocks
-                    //var foldingManager = ICSharpCode.AvalonEdit.Folding.FoldingManager.Install(myTextEditor1.textEditor.TextArea);
-                    //var foldingStrategy = new ICSharpCode.AvalonEdit.Folding.XmlFoldingStrategy();
-                    //foldingStrategy.UpdateFoldings(foldingManager, myTextEditor1.textEditor.Document);
-                }
-                catch( Exception e )
+            InitializeComponent();
+            
+            splitContainer1.SplitterDistance = Settings.Default.PackageExplorer_SplitterDistance;
+
+            // Fold all { } blocks
+            var foldingManager = ICSharpCode.AvalonEdit.Folding.FoldingManager.Install(TextEditorPanel.TextEditor.TextArea);
+            var foldingStrategy = new ICSharpCode.AvalonEdit.Folding.XmlFoldingStrategy();
+            foldingStrategy.UpdateFoldings(foldingManager, TextEditorPanel.TextEditor.Document);
+
+            var langPath = Path.Combine(Application.StartupPath, "Config", "UnrealScript.xshd");
+            if (File.Exists(langPath))
+            {
+                using (var stream = new System.Xml.XmlTextReader(langPath))
                 {
-                    ExceptionDialog.Show( e.GetType().Name, e ); 
+                    TextEditorPanel.TextEditor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(
+                        stream,
+                        ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance
+                    );
                 }
             }
 
-            _Form = Tabs.Form;
-            base.TabCreated();
+            TextEditorPanel.searchWiki.Click += SearchWiki_Click;
+            TextEditorPanel.searchDocument.Click += SearchDocument_Click;
+            TextEditorPanel.searchPackage.Click += SearchClasses_Click;
+            TextEditorPanel.searchObject.Click += SearchObject_Click;
+            TextEditorPanel.TextEditor.ContextMenuOpening += ContextMenu_ContextMenuOpening;
+            TextEditorPanel.copy.Click += Copy_Click;
+        }
+
+        private void UC_PackageExplorer_Load(object sender, EventArgs e)
+        {
+            _State = Program.Options.GetState( FileName );
+
+            InitializeFromFile(FileName);
         }
 
         void Copy_Click( object sender, System.Windows.RoutedEventArgs e )
         {
-            TextEditorPanel.textEditor.Copy();
+            TextEditorPanel.TextEditor.Copy();
         }
 
         string GetSelection()
         {
-            return TextEditorPanel.textEditor.TextArea.Selection.GetText();
+            return TextEditorPanel.TextEditor.TextArea.Selection.GetText();
         }
 
         void ContextMenu_ContextMenuOpening( object sender, System.Windows.Controls.ContextMenuEventArgs e )
         {
-            if( TextEditorPanel.textEditor.TextArea.Selection.Length == 0 )
+            if( TextEditorPanel.TextEditor.TextArea.Selection.Length == 0 )
             {
                 TextEditorPanel.searchWiki.Visibility = System.Windows.Visibility.Collapsed;
                 TextEditorPanel.searchDocument.Visibility = System.Windows.Visibility.Collapsed;
@@ -132,10 +137,16 @@ namespace UEExplorer.UI.Tabs
 
         private XMLSettings.State _State;
 
-        public void PostInitialize()
-        {  
-            _State = Program.Options.GetState( FileName ); 
-            LoadPackage();
+        private void InitializeFromFile(string filePath)
+        {
+            try
+            {
+                LoadPackage();
+            }
+            catch (Exception exception)
+            {
+                throw new UnrealException("Couldn't load or initialize package", exception);
+            }
         }
 
         private void LoadPackage()
@@ -150,17 +161,42 @@ namespace UEExplorer.UI.Tabs
                 UnrealPackage.OverrideVersion = Program.Options.Version;
             }
 
-            UnrealConfig.SuppressSignature = false;
             reload:
             ProgressStatus.SetStatus( Resources.PACKAGE_LOADING );
             // Open the file.
             try
             {
-                UnrealConfig.Platform = (UnrealConfig.CookedPlatform)Enum.Parse
-                ( 
-                    typeof(UnrealConfig.CookedPlatform), 
-                    _Form.Platform.Text, true 
-                );
+                // HACK: temporary workaround for legacy UE Explorer code, in order to suppress foreign file signatures without having to modify UELib.
+                var stream = new FileStream(FileName, FileMode.Open, FileAccess.Read);
+                byte[] buffer = new byte[4];
+                int read = stream.Read(buffer, 0, 4);
+                stream.Close();
+
+                uint signature = BitConverter.ToUInt32(buffer, 0);
+
+                if (read == 4 && (
+                        // 0x9E2A83C1
+                        signature != UnrealPackage.Signature &&
+                        signature != UnrealPackage.Signature_BigEndian
+                        // Killing Floor
+                        && signature != 0x9E2A83C2
+                        // Hawken
+                        && signature != 0xEA31928C
+                        ))
+                {
+                    if (MessageBox.Show(
+                            Resources.PACKAGE_UNKNOWN_SIGNATURE,
+                            Resources.Warning, MessageBoxButtons.YesNo
+                        ) == DialogResult.No
+                       )
+                    {
+                        ((ProgramForm)ParentForm).Tabs.CloseTab((TabStripItem)Parent);
+                        return;
+                    }
+
+                }
+
+                UnrealConfig.SuppressSignature = true;
                 _UnrealPackage = UnrealLoader.LoadPackage( FileName );
                 UnrealConfig.SuppressSignature = false;
 
@@ -184,26 +220,6 @@ namespace UEExplorer.UI.Tabs
                 }
 
                 TabControl_General.TabPages.Remove( TabPage_Chunks );
-            }
-            catch( FileLoadException )
-            {
-                if( _UnrealPackage != null )
-                {
-                    _UnrealPackage.Dispose();
-                    _UnrealPackage = null;
-                }
-
-                if( MessageBox.Show(
-                        Resources.PACKAGE_UNKNOWN_SIGNATURE,
-                        Resources.Warning, MessageBoxButtons.YesNo
-                    ) == DialogResult.No
-                )
-                {
-                    Tabs.Remove( this );
-                    return;
-                }
-                UnrealConfig.SuppressSignature = true;
-                goto reload;
             }
             catch( Exception e )
             {
@@ -340,6 +356,13 @@ namespace UEExplorer.UI.Tabs
             try
             {
                 Refresh();
+
+                // False if set to 'Auto', by not assigning to CookerPlatform we let UELib runs its auto-detect course.
+                if (Enum.TryParse(((ProgramForm)ParentForm).platformMenuItem.Text, out BuildPlatform platform))
+                {
+                    _UnrealPackage.CookerPlatform = platform;
+                };
+                
                 _UnrealPackage.InitializePackage( Program.Options.InitFlags );
 
                 ReadMetaInfo();
@@ -424,21 +447,12 @@ namespace UEExplorer.UI.Tabs
             {
                 if( sfd.ShowDialog() == DialogResult.OK )
                 {
-                    File.WriteAllText( sfd.FileName, TextEditorPanel.textEditor.Text );
+                    File.WriteAllText( sfd.FileName, TextEditorPanel.TextEditor.Text );
                 }
             }
         }
-
-        private ProgramForm _Form;
+        
         private List<UClass> _ClassesList;
-
-        public override void TabClosing()
-        {
-            base.TabClosing();
-
-            ProgressStatus.ResetStatus();
-            ProgressStatus.ResetValue();
-        }
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -447,68 +461,16 @@ namespace UEExplorer.UI.Tabs
         protected override void Dispose( bool disposing )
         {
             Console.WriteLine( "Disposing UC_PackageExplorer " + disposing );
-            if( disposing )
+
+            ProgressStatus.ResetStatus();
+            ProgressStatus.ResetValue();
+            
+            if ( disposing )
             {
-                exportDecompiledClassesToolStripMenuItem.Click -= _OnExportClassesClick;
-                exportScriptClassesToolStripMenuItem.Click -= _OnExportScriptsClick;
-                TreeView_Classes.AfterSelect -= _OnClassesNodeSelected;
-                TreeView_Classes.BeforeExpand -= _OnClassesNodeExpand;
-                Num_ObjectIndex.ValueChanged -= Num_ObjectIndex_ValueChanged;
-                Num_NameIndex.ValueChanged -= Num_NameIndex_ValueChanged;
-                checkBox9.CheckedChanged -= FilterByClassCheckBox;
-                checkBox8.CheckedChanged -= FilterByClassCheckBox;
-                checkBox7.CheckedChanged -= FilterByClassCheckBox;
-                checkBox6.CheckedChanged -= FilterByClassCheckBox;
-                checkBox5.CheckedChanged -= FilterByClassCheckBox;
-                checkBox4.CheckedChanged -= FilterByClassCheckBox;
-                checkBox3.CheckedChanged -= FilterByClassCheckBox;
-                checkBox2.CheckedChanged -= FilterByClassCheckBox;
-                checkBox1.CheckedChanged -= FilterByClassCheckBox;
-                splitContainer1.SplitterMoved -= SplitContainer1_SplitterMoved;
-                panel1.Paint -= Panel1_Paint;
-
-                TabControl_General.Selecting -= TabControl_General_Selecting;
-                TabControl_General.Selected -= TabControl_General_Selected;
-
-                TabControl_Tables.Selected -= TabControl_Tables_Selected;
-
-                TreeView_Exports.AfterSelect -= _OnExportsNodeSelected;
-                TreeView_Exports.NodeMouseClick -= TreeView_Exports_NodeMouseClick;
-                TreeView_Imports.NodeMouseClick -= TreeView_Imports_NodeMouseClick;
-                TreeView_Classes.NodeMouseClick -= TreeView_Classes_NodeMouseClick;
-
-                this.FilterText.TextChanged -= this.FilterText_TextChanged;
-                this.Button_Export.Click -= this.Button_Export_Click;
-                this.TreeView_Content.BeforeExpand -= this.TreeView_Content_BeforeExpand;
-                this.TreeView_Content.AfterSelect -= this.TreeView_Content_AfterSelect;
-                this.TreeView_Content.NodeMouseClick -= this.TreeView_Content_NodeMouseClick;
-                this.TreeView_Deps.DrawNode -= this.TreeView_Deps_DrawNode;
-                this.ToolStrip_Main.Paint -= this.ToolStrip_Content_Paint;
-                this.findNextToolStripMenuItem.Click -= this.FindNextToolStripMenuItem_Click;
-                this.findInDocumentToolStripMenuItem.Click -= this.FindInDocumentToolStripMenuItem_Click;
-                this.findInClassesToolStripMenuItem.Click -= this.FindInClassesToolStripMenuItem_Click;
-                this.viewBufferToolStripMenuItem.Click -= this.ViewBufferToolStripMenuItem_Click;
-                this.ReloadButton.Click -= this.ReloadButton_Click;
-                this.panel4.Paint -= this.Panel4_Paint;
-                this.ToolStrip_Content.Paint -= this.ToolStrip_Content_Paint;
-                this.PrevButton.Click -= this.ToolStripButton_Backward_Click;
-                this.NextButton.Click -= this.ToolStripButton_Forward_Click;
-                this.ExportButton.Click -= this.ToolStripButton1_Click;
-                this.toolStripSeparator1.Paint -= this.ToolStripSeparator1_Paint;
-                this.SearchBox.KeyPress -= this.SearchBox_KeyPress_1;
-                this.SearchBox.TextChanged -= this.SearchBox_TextChanged;
-                this.FindButton.Click -= this.ToolStripButton_Find_Click;
-                this.toolStripSeparator4.Paint -= this.ToolStripSeparator1_Paint;
-                this.toolStripSeparator3.Paint -= this.ToolStripSeparator1_Paint;
-                this.ViewTools.DropDownItemClicked -= this.ViewTools_DropDownItemClicked;
-
                 _BorderPen.Dispose();
                 _LinePen.Dispose();
 
                 WPFHost.Dispose();
-
-                _ClassesList = null;
-                _Form = null;
 
                 if( _UnrealPackage != null )
                 {
@@ -521,6 +483,7 @@ namespace UEExplorer.UI.Tabs
                     components.Dispose();
                 }
             }
+            
             base.Dispose( disposing );
         }
 
@@ -562,8 +525,7 @@ namespace UEExplorer.UI.Tabs
             }
             InitializeTabs();
 
-            var state = Program.Options.GetState( _UnrealPackage.FullPackageName );
-            SearchObjectTextBox.Text = state.SearchObjectValue;
+            SearchObjectTextBox.Text = _State.SearchObjectValue;
             DoSearchObjectByGroup( SearchObjectTextBox.Text );
 
             SearchObjectTextBox.TextChanged += (e, sender) =>
@@ -748,7 +710,7 @@ namespace UEExplorer.UI.Tabs
 
         private void _OnNotifyObjectAdded( object sender, ObjectEventArgs e )
         {
-            if( e.ObjectRef.Table.ClassIndex == 0 && e.ObjectRef.Name.ToLower() != "none" )
+            if( e.ObjectRef.ExportTable != null && e.ObjectRef.Table.ClassIndex == 0 && e.ObjectRef.Name.ToLower() != "none" )
             {
                 _ClassesList.Add( (UClass)e.ObjectRef );
             }
@@ -969,8 +931,11 @@ namespace UEExplorer.UI.Tabs
 
         internal void ReloadPackage()
         {
-            Tabs.Remove( this, true );
-            Tabs.Form.LoadFile( FileName );
+            string filePath = _UnrealPackage.FullPackageName;
+
+            var form = ((ProgramForm)ParentForm);
+            form.Tabs.CloseTab((TabStripItem)Parent);
+            form.LoadFromFile(filePath);
         }
 
         private void OutputNodeObject( TreeNode treeNode )
@@ -1305,27 +1270,16 @@ namespace UEExplorer.UI.Tabs
             PerformNodeAction( TreeView_Content.SelectedNode, e.ClickedItem.Name );
         }
 
-        private static string FormatTokenHeader( UStruct.UByteCodeDecompiler.Token token, bool acronymizeName = true )
+        private static string LegacyFormatTokenHeader( UStruct.UByteCodeDecompiler.Token token )
         {
-            var name = token.GetType().Name;
-            if( !acronymizeName ) 
-                return String.Format( "{0}({1}/{2})", name, token.Size, token.StorageSize );
-
-            name = String.Concat( name.Substring( 0, name.Length - 5 ).Select(
-                c => Char.IsUpper( c ) ? c.ToString( CultureInfo.InvariantCulture ) : String.Empty
-                ) );
-
-            if( token is UStruct.UByteCodeDecompiler.CastToken )
-            {
-                name = "C" + name;
-            }
-            return String.Format( "{0}({1}/{2})", name, token.Size, token.StorageSize );
+            string name = token.GetType().Name;
+            string abbrName = string.Concat(name.Where(char.IsUpper));
+            return $"{abbrName}({token.Size}/{token.StorageSize})";
         }
 
         private static string _DisassembleTokensTemplate;
-        private static string DisassembleTokens( UStruct container, UStruct.UByteCodeDecompiler decompiler, int tokenCount )
+        private static void LegacyDisassembleTokens( UStruct container, UStruct.UByteCodeDecompiler decompiler, int tokenCount, StringBuilder content )
         {
-            var content = String.Empty;
             for( var i = 0; i + 1 < tokenCount; ++ i )
             {
                 var token = decompiler.NextToken;
@@ -1353,24 +1307,33 @@ namespace UEExplorer.UI.Tabs
                 container.Package.Stream.Position = container.ExportTable.SerialOffset + container.ScriptOffset + token.StoragePosition;
                 container.Package.Stream.Read( buffer, 0, buffer.Length );
 
-                var header = FormatTokenHeader( token, false );
+                var header = LegacyFormatTokenHeader( token );
                 var bytes = BitConverter.ToString( buffer ).Replace( '-', ' ' );
 
-                content += String.Format( _DisassembleTokensTemplate.Replace( "%INDENTATION%", UDecompilingState.Tabs ), 
+                content.Append(String.Format( _DisassembleTokensTemplate.Replace( "%INDENTATION%", UDecompilingState.Tabs ), 
                     token.Position, token.StoragePosition, 
                     header, bytes,
                     value != String.Empty ? value + "\r\n" : value, firstTokenIndex, lastTokenIndex
-                );
+                ));
 
                 if( subTokensCount > 0 )
                 {
                     UDecompilingState.AddTab();
-                    content += DisassembleTokens( container, decompiler, subTokensCount + 1 );
-                    i += subTokensCount;
-                    UDecompilingState.RemoveTab();
+                    try
+                    {
+                        LegacyDisassembleTokens(container, decompiler, subTokensCount + 1, content);
+                    }
+                    catch (Exception ex)
+                    {
+                        content.Append($"/*Disassemble error: {ex}*/");
+                    }
+                    finally
+                    {
+                        i += subTokensCount;
+                        UDecompilingState.RemoveTab();
+                    }
                 }
             }
-            return content;
         }
 
         private void PerformNodeAction( object target, string action )
@@ -1518,15 +1481,6 @@ namespace UEExplorer.UI.Tabs
                         }
                         break;
 
-#if DEBUG
-                    case "FORCE_DESERIALIZE":
-                        SetContentTitle( ((TreeNode)target).Text, false );
-
-                        obj.BeginDeserializing();
-                        obj.PostInitialize();
-                        break;
-#endif
-
                     case "REPLICATION":
                     {
                         var unClass = obj as UClass;
@@ -1592,9 +1546,10 @@ namespace UEExplorer.UI.Tabs
                             codeDec.InitDecompile();
 
                             _DisassembleTokensTemplate = LoadTemplate("struct.tokens-disassembled");
-                            string content = DisassembleTokens( unStruct, codeDec, codeDec.DeserializedTokens.Count );
+                            var content = new StringBuilder(codeDec.DeserializedTokens.Count);
+                            LegacyDisassembleTokens( unStruct, codeDec, codeDec.DeserializedTokens.Count, content );
                             SetContentTitle( unStruct.GetOuterGroup(), true, "Tokens-Disassembled" );
-                            SetContentText( unStruct, content );
+                            SetContentText( unStruct, content.ToString() );
                         }
                         break;
                     }
@@ -1609,13 +1564,14 @@ namespace UEExplorer.UI.Tabs
                             codeDec.Deserialize();
                             codeDec.InitDecompile();
 
-                            string content = String.Empty;
-                            while( codeDec.CurrentTokenIndex + 1 < codeDec.DeserializedTokens.Count )
+                            var content = new StringBuilder(codeDec.DeserializedTokens.Count);
+                            while ( codeDec.CurrentTokenIndex + 1 < codeDec.DeserializedTokens.Count )
                             {
+                                string output;
+                                var breakOut = false;
+
                                 var t = codeDec.NextToken;
                                 int orgIndex = codeDec.CurrentTokenIndex;
-                                string output;
-                                bool breakOut = false;
                                 try
                                 {
                                     output = t.Decompile();
@@ -1626,32 +1582,31 @@ namespace UEExplorer.UI.Tabs
                                     breakOut = true;
                                 }
 
-                                string chain = FormatTokenHeader( t );
-                                int inlinedTokens = codeDec.CurrentTokenIndex - orgIndex;
-                                if( inlinedTokens > 0 )
+                                string chain = LegacyFormatTokenHeader( t );
+                                int endTokenIndex = codeDec.CurrentTokenIndex;
+                                if( endTokenIndex < codeDec.DeserializedTokens.Count ) // sanity check
                                 {
-                                    ++ orgIndex;
-                                    for( int i = 0; i < inlinedTokens; ++ i )
+                                    for( int i = orgIndex + 1; i < endTokenIndex; ++ i )
                                     {
-                                        chain += " -> " + FormatTokenHeader( codeDec.DeserializedTokens[orgIndex + i] );
+                                        chain += " -> " + LegacyFormatTokenHeader( codeDec.DeserializedTokens[i] );
                                     }
                                 }
-
+                                
                                 var buffer = new byte[t.StorageSize];
                                 _UnrealPackage.Stream.Position = unStruct.ExportTable.SerialOffset + unStruct.ScriptOffset + t.StoragePosition;
                                 _UnrealPackage.Stream.Read( buffer, 0, buffer.Length );
 
-                                content += String.Format( tokensTemplate, 
+                                content.Append(String.Format( tokensTemplate, 
                                     t.Position, t.StoragePosition, 
                                     chain, BitConverter.ToString( buffer ).Replace( '-', ' ' ),
                                     output != String.Empty ? output + "\r\n" : output
-                                );
+                                ));
 
                                 if( breakOut )
                                     break;
                             }
                             SetContentTitle( unStruct.GetOuterGroup(), true, "Tokens" );
-                            SetContentText( unStruct, content );
+                            SetContentText( unStruct, content.ToString() );
                         }
                         break;
                     }
@@ -1700,10 +1655,9 @@ namespace UEExplorer.UI.Tabs
             }
         }
 
-        private static readonly string _TemplateDir = Path.Combine( Program.ConfigDir, "Templates" );
         private static string LoadTemplate( string name )
         {
-            return File.ReadAllText( Path.Combine( _TemplateDir, name + ".txt" ), System.Text.Encoding.ASCII );
+            return File.ReadAllText( Path.Combine(Program.s_templateDir, name + ".txt" ), System.Text.Encoding.ASCII );
         }
         #endregion
 
@@ -1788,10 +1742,10 @@ namespace UEExplorer.UI.Tabs
                 findInDocumentToolStripMenuItem.Enabled = true;
             }
 
-            TextEditorPanel.textEditor.Text = content;
+            TextEditorPanel.TextEditor.Text = content;
             if( resetView )
             {
-                TextEditorPanel.textEditor.ScrollToHome();
+                TextEditorPanel.TextEditor.ScrollToHome();
             }
 
             if( skip )
@@ -1834,19 +1788,24 @@ namespace UEExplorer.UI.Tabs
         private void StoreViewForBuffer( int bufferIndex )
         {
             var content = _ContentBuffer[bufferIndex];
-            content.X = TextEditorPanel.textEditor.HorizontalOffset;
-            content.Y = TextEditorPanel.textEditor.VerticalOffset;
+            content.X = TextEditorPanel.TextEditor.HorizontalOffset;
+            content.Y = TextEditorPanel.TextEditor.VerticalOffset;
             _ContentBuffer[bufferIndex] = content;
         }
 
         private void RestoreBufferedContent( int bufferIndex )
         {
-            SetContentTitle( _ContentBuffer[bufferIndex].Label, false ); 
-            SetContentText( _ContentBuffer[bufferIndex].Node, _ContentBuffer[bufferIndex].Text, true );
-            SelectNode( _ContentBuffer[bufferIndex].Node as TreeNode );   
+            RestoreBufferedContent(_ContentBuffer[bufferIndex]);
+        }
 
-            TextEditorPanel.textEditor.ScrollToVerticalOffset( _ContentBuffer[bufferIndex].Y );
-            TextEditorPanel.textEditor.ScrollToHorizontalOffset( _ContentBuffer[bufferIndex].X );
+        private void RestoreBufferedContent(BufferData bufferData)
+        {
+            SetContentTitle(bufferData.Label, false);
+            SetContentText(bufferData.Node, bufferData.Text, true);
+            SelectNode(bufferData.Node as TreeNode);
+
+            TextEditorPanel.TextEditor.ScrollToVerticalOffset(bufferData.Y);
+            TextEditorPanel.TextEditor.ScrollToHorizontalOffset(bufferData.X);
         }
 
         private void ToolStripButton_Backward_Click( object sender, EventArgs e )
@@ -1946,8 +1905,8 @@ namespace UEExplorer.UI.Tabs
                 return;
             }
 
-            var hexDialog = new HexViewerForm( target, this );
-            hexDialog.Show( _Form );
+            var hexDialog = new HexViewerForm( target, FileName );
+            hexDialog.Show( ParentForm );
         }
 
         private System.Windows.Forms.Timer _FilterTextChangedTimer = null;
@@ -2255,8 +2214,8 @@ namespace UEExplorer.UI.Tabs
                     SetContentText( nodeEvent.Node, unClass.Decompile(), false, false );
                 }
 
-                TextEditorPanel.textEditor.ScrollTo( findResult.TextLine, findResult.TextColumn );
-                TextEditorPanel.textEditor.Select( findResult.TextIndex, findText.Length );
+                TextEditorPanel.TextEditor.ScrollTo( findResult.TextLine, findResult.TextColumn );
+                TextEditorPanel.TextEditor.Select( findResult.TextIndex, findText.Length );
             };
         }
 
@@ -2464,6 +2423,41 @@ namespace UEExplorer.UI.Tabs
             }
             node = null;
             return false;
+        }
+
+        private void UC_PackageExplorer_Leave(object sender, EventArgs e)
+        {
+            _Tools_StripDropDownButton.Enabled = false;
+        }
+
+        private void RecentToolStripDropDownButton_DropDownOpening(object sender, EventArgs e)
+        {
+            recentToolStripDropDownButton.DropDownItems.Clear();
+
+            if (_BufferIndex == -1)
+            {
+                return;
+            }
+
+            var recentItems = _ContentBuffer
+                //.GetRange(0, _BufferIndex + 1)
+                .Select((d, i) => new ToolStripMenuItem
+                {
+                    Text = d.Node?.ToString() ?? d.Label,
+                    Tag = i,
+                    Checked = i == _BufferIndex
+                })
+                .Reverse()
+                .ToArray<ToolStripMenuItem>();
+
+            recentToolStripDropDownButton.DropDownItems.AddRange(recentItems);
+        }
+
+        private void RecentToolStripDropDownButton_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            int bufferIndex = (int)e.ClickedItem.Tag;
+            RestoreBufferedContent(bufferIndex);
+            _BufferIndex = bufferIndex;
         }
     }
 }

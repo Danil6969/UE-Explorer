@@ -44,6 +44,7 @@
             System.Windows.Forms.Label label3;
             System.Windows.Forms.Label label2;
             System.Windows.Forms.Label label1;
+            System.Windows.Forms.Panel panel1;
             this.DataInfoPanel = new System.Windows.Forms.Panel();
             this.DissambledStruct = new System.Windows.Forms.TextBox();
             this.DissambledIndex = new System.Windows.Forms.TextBox();
@@ -58,21 +59,24 @@
             this.DissambledShort = new System.Windows.Forms.TextBox();
             this.DissambledByte = new System.Windows.Forms.TextBox();
             this.DissambledChar = new System.Windows.Forms.TextBox();
-            this.HexLinePanel = new UEExplorer.UI.Forms.HexViewerPanel();
+            this.HexViewPanel = new UEExplorer.UI.Forms.HexViewerPanel();
             this.Context_Structure = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.EditMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defineCharToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defineByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defineShortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defineIntToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defineLongToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defineFloatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defineObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defineNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defineCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defineIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.HexScrollBar = new System.Windows.Forms.VScrollBar();
+            this.editCellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editStructValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hexValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hexOffsetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.decimalValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.decimalOffsetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.structNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.structValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.structSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.defineStructToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HexViewScrollBar = new System.Windows.Forms.VScrollBar();
             this.HexToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.removeStructToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             label14 = new System.Windows.Forms.Label();
             label13 = new System.Windows.Forms.Label();
@@ -87,37 +91,33 @@
             label3 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
+            panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             this.DataInfoPanel.SuspendLayout();
+            panel1.SuspendLayout();
             this.Context_Structure.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
             // 
-            resources.ApplyResources(splitContainer1, "splitContainer1");
             splitContainer1.DataBindings.Add(new System.Windows.Forms.Binding("SplitterDistance", global::UEExplorer.Properties.Settings.Default, "HexPanel_SplitterDistance", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            resources.ApplyResources(splitContainer1, "splitContainer1");
             splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            resources.ApplyResources(splitContainer1.Panel1, "splitContainer1.Panel1");
             splitContainer1.Panel1.Controls.Add(this.DataInfoPanel);
-            this.HexToolTip.SetToolTip(splitContainer1.Panel1, resources.GetString("splitContainer1.Panel1.ToolTip"));
             // 
             // splitContainer1.Panel2
             // 
-            resources.ApplyResources(splitContainer1.Panel2, "splitContainer1.Panel2");
-            splitContainer1.Panel2.Controls.Add(this.HexLinePanel);
-            this.HexToolTip.SetToolTip(splitContainer1.Panel2, resources.GetString("splitContainer1.Panel2.ToolTip"));
+            splitContainer1.Panel2.Controls.Add(panel1);
             splitContainer1.SplitterDistance = global::UEExplorer.Properties.Settings.Default.HexPanel_SplitterDistance;
             splitContainer1.TabStop = false;
-            this.HexToolTip.SetToolTip(splitContainer1, resources.GetString("splitContainer1.ToolTip"));
-            splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer1_SplitterMoved);
-            splitContainer1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EditKeyDown);
+            splitContainer1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HexViewPanel_KeyDown);
             // 
             // DataInfoPanel
             // 
@@ -148,338 +148,345 @@
             this.DataInfoPanel.Controls.Add(this.DissambledByte);
             this.DataInfoPanel.Controls.Add(label1);
             this.DataInfoPanel.Controls.Add(this.DissambledChar);
-            this.DataInfoPanel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.DataInfoPanel.Name = "DataInfoPanel";
-            this.HexToolTip.SetToolTip(this.DataInfoPanel, resources.GetString("DataInfoPanel.ToolTip"));
-            this.DataInfoPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.DataInfoPanel_Paint);
             // 
             // label14
             // 
             resources.ApplyResources(label14, "label14");
             label14.ForeColor = System.Drawing.Color.SaddleBrown;
             label14.Name = "label14";
-            this.HexToolTip.SetToolTip(label14, resources.GetString("label14.ToolTip"));
             // 
             // DissambledStruct
             // 
             resources.ApplyResources(this.DissambledStruct, "DissambledStruct");
-            this.DissambledStruct.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DissambledStruct.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledStruct.Name = "DissambledStruct";
             this.DissambledStruct.ReadOnly = true;
-            this.DissambledStruct.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledStruct, resources.GetString("DissambledStruct.ToolTip"));
             // 
             // label13
             // 
             resources.ApplyResources(label13, "label13");
             label13.ForeColor = System.Drawing.Color.MediumOrchid;
             label13.Name = "label13";
-            this.HexToolTip.SetToolTip(label13, resources.GetString("label13.ToolTip"));
             // 
             // DissambledIndex
             // 
             resources.ApplyResources(this.DissambledIndex, "DissambledIndex");
-            this.DissambledIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DissambledIndex.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledIndex.Name = "DissambledIndex";
             this.DissambledIndex.ReadOnly = true;
-            this.DissambledIndex.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledIndex, resources.GetString("DissambledIndex.ToolTip"));
             // 
             // DissambledName
             // 
             resources.ApplyResources(this.DissambledName, "DissambledName");
-            this.DissambledName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DissambledName.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledName.Name = "DissambledName";
             this.DissambledName.ReadOnly = true;
-            this.DissambledName.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledName, resources.GetString("DissambledName.ToolTip"));
             // 
             // label11
             // 
             resources.ApplyResources(label11, "label11");
             label11.ForeColor = System.Drawing.Color.Green;
             label11.Name = "label11";
-            this.HexToolTip.SetToolTip(label11, resources.GetString("label11.ToolTip"));
             // 
             // DissambledObject
             // 
             resources.ApplyResources(this.DissambledObject, "DissambledObject");
-            this.DissambledObject.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DissambledObject.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledObject.Name = "DissambledObject";
             this.DissambledObject.ReadOnly = true;
-            this.DissambledObject.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledObject, resources.GetString("DissambledObject.ToolTip"));
             // 
             // label10
             // 
             resources.ApplyResources(label10, "label10");
             label10.ForeColor = System.Drawing.Color.DarkTurquoise;
             label10.Name = "label10";
-            this.HexToolTip.SetToolTip(label10, resources.GetString("label10.ToolTip"));
             // 
             // DissambledFloat
             // 
             resources.ApplyResources(this.DissambledFloat, "DissambledFloat");
-            this.DissambledFloat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DissambledFloat.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledFloat.Name = "DissambledFloat";
             this.DissambledFloat.ReadOnly = true;
-            this.DissambledFloat.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledFloat, resources.GetString("DissambledFloat.ToolTip"));
             // 
             // label9
             // 
             resources.ApplyResources(label9, "label9");
             label9.ForeColor = System.Drawing.Color.SlateBlue;
             label9.Name = "label9";
-            this.HexToolTip.SetToolTip(label9, resources.GetString("label9.ToolTip"));
             // 
             // DissambledULong
             // 
             resources.ApplyResources(this.DissambledULong, "DissambledULong");
-            this.DissambledULong.ForeColor = System.Drawing.Color.Silver;
+            this.DissambledULong.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledULong.Name = "DissambledULong";
             this.DissambledULong.ReadOnly = true;
-            this.DissambledULong.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledULong, resources.GetString("DissambledULong.ToolTip"));
             // 
             // label7
             // 
             resources.ApplyResources(label7, "label7");
             label7.ForeColor = System.Drawing.Color.Purple;
             label7.Name = "label7";
-            this.HexToolTip.SetToolTip(label7, resources.GetString("label7.ToolTip"));
             // 
             // DissambledLong
             // 
             resources.ApplyResources(this.DissambledLong, "DissambledLong");
-            this.DissambledLong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DissambledLong.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledLong.Name = "DissambledLong";
             this.DissambledLong.ReadOnly = true;
-            this.DissambledLong.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledLong, resources.GetString("DissambledLong.ToolTip"));
             // 
             // label8
             // 
             resources.ApplyResources(label8, "label8");
             label8.ForeColor = System.Drawing.Color.Purple;
             label8.Name = "label8";
-            this.HexToolTip.SetToolTip(label8, resources.GetString("label8.ToolTip"));
             // 
             // DissambledUInt
             // 
             resources.ApplyResources(this.DissambledUInt, "DissambledUInt");
-            this.DissambledUInt.ForeColor = System.Drawing.Color.Silver;
+            this.DissambledUInt.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledUInt.Name = "DissambledUInt";
             this.DissambledUInt.ReadOnly = true;
-            this.DissambledUInt.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledUInt, resources.GetString("DissambledUInt.ToolTip"));
             // 
             // label6
             // 
             resources.ApplyResources(label6, "label6");
             label6.ForeColor = System.Drawing.Color.DodgerBlue;
             label6.Name = "label6";
-            this.HexToolTip.SetToolTip(label6, resources.GetString("label6.ToolTip"));
             // 
             // DissambledInt
             // 
             resources.ApplyResources(this.DissambledInt, "DissambledInt");
-            this.DissambledInt.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DissambledInt.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledInt.Name = "DissambledInt";
             this.DissambledInt.ReadOnly = true;
-            this.DissambledInt.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledInt, resources.GetString("DissambledInt.ToolTip"));
             // 
             // label5
             // 
             resources.ApplyResources(label5, "label5");
             label5.ForeColor = System.Drawing.Color.DodgerBlue;
             label5.Name = "label5";
-            this.HexToolTip.SetToolTip(label5, resources.GetString("label5.ToolTip"));
             // 
             // DissambledUShort
             // 
             resources.ApplyResources(this.DissambledUShort, "DissambledUShort");
-            this.DissambledUShort.ForeColor = System.Drawing.Color.Silver;
+            this.DissambledUShort.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledUShort.Name = "DissambledUShort";
             this.DissambledUShort.ReadOnly = true;
-            this.DissambledUShort.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledUShort, resources.GetString("DissambledUShort.ToolTip"));
             // 
             // label4
             // 
             resources.ApplyResources(label4, "label4");
             label4.ForeColor = System.Drawing.Color.MediumBlue;
             label4.Name = "label4";
-            this.HexToolTip.SetToolTip(label4, resources.GetString("label4.ToolTip"));
             // 
             // DissambledShort
             // 
             resources.ApplyResources(this.DissambledShort, "DissambledShort");
-            this.DissambledShort.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DissambledShort.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledShort.Name = "DissambledShort";
             this.DissambledShort.ReadOnly = true;
-            this.DissambledShort.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledShort, resources.GetString("DissambledShort.ToolTip"));
             // 
             // label3
             // 
             resources.ApplyResources(label3, "label3");
             label3.ForeColor = System.Drawing.Color.MediumBlue;
             label3.Name = "label3";
-            this.HexToolTip.SetToolTip(label3, resources.GetString("label3.ToolTip"));
             // 
             // label2
             // 
             resources.ApplyResources(label2, "label2");
             label2.ForeColor = System.Drawing.Color.Peru;
             label2.Name = "label2";
-            this.HexToolTip.SetToolTip(label2, resources.GetString("label2.ToolTip"));
             // 
             // DissambledByte
             // 
             resources.ApplyResources(this.DissambledByte, "DissambledByte");
-            this.DissambledByte.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DissambledByte.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledByte.Name = "DissambledByte";
             this.DissambledByte.ReadOnly = true;
-            this.DissambledByte.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledByte, resources.GetString("DissambledByte.ToolTip"));
             // 
             // label1
             // 
             resources.ApplyResources(label1, "label1");
             label1.ForeColor = System.Drawing.Color.DarkBlue;
             label1.Name = "label1";
-            this.HexToolTip.SetToolTip(label1, resources.GetString("label1.ToolTip"));
             // 
             // DissambledChar
             // 
             resources.ApplyResources(this.DissambledChar, "DissambledChar");
-            this.DissambledChar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DissambledChar.ForeColor = System.Drawing.SystemColors.GrayText;
             this.DissambledChar.Name = "DissambledChar";
             this.DissambledChar.ReadOnly = true;
-            this.DissambledChar.TabStop = false;
-            this.HexToolTip.SetToolTip(this.DissambledChar, resources.GetString("DissambledChar.ToolTip"));
             // 
-            // HexLinePanel
+            // panel1
             // 
-            resources.ApplyResources(this.HexLinePanel, "HexLinePanel");
-            this.HexLinePanel.ContextMenuStrip = this.Context_Structure;
-            this.HexLinePanel.Name = "HexLinePanel";
-            this.HexToolTip.SetToolTip(this.HexLinePanel, resources.GetString("HexLinePanel.ToolTip"));
-            this.HexLinePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.HexLinePanel_Paint);
-            this.HexLinePanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.HexLinePanel_MouseClick);
-            this.HexLinePanel.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.HexLinePanel_MouseDoubleClick);
-            this.HexLinePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HexLinePanel_MouseMove);
+            panel1.Controls.Add(this.HexViewPanel);
+            panel1.Controls.Add(this.HexViewScrollBar);
+            resources.ApplyResources(panel1, "panel1");
+            panel1.Name = "panel1";
+            // 
+            // HexViewPanel
+            // 
+            this.HexViewPanel.ContextMenuStrip = this.Context_Structure;
+            resources.ApplyResources(this.HexViewPanel, "HexViewPanel");
+            this.HexViewPanel.Name = "HexViewPanel";
+            this.HexViewPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.HexLinePanel_Paint);
+            this.HexViewPanel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HexViewPanel_KeyDown);
+            this.HexViewPanel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HexViewPanel_KeyPress);
+            this.HexViewPanel.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HexViewPanel_KeyUp);
+            this.HexViewPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.HexLinePanel_MouseClick);
+            this.HexViewPanel.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.HexLinePanel_MouseDoubleClick);
+            this.HexViewPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HexLinePanel_MouseMove);
             // 
             // Context_Structure
             // 
-            resources.ApplyResources(this.Context_Structure, "Context_Structure");
             this.Context_Structure.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.EditMenuItem,
-            this.defineCharToolStripMenuItem,
-            this.defineByteToolStripMenuItem,
-            this.defineShortToolStripMenuItem,
-            this.defineIntToolStripMenuItem,
-            this.defineLongToolStripMenuItem,
-            this.defineFloatToolStripMenuItem,
-            this.defineObjectToolStripMenuItem,
-            this.defineNameToolStripMenuItem,
-            this.defineCodeToolStripMenuItem,
-            this.defineIndexToolStripMenuItem});
+            this.editCellToolStripMenuItem,
+            this.cellToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.defineStructToolStripMenuItem,
+            this.removeStructToolStripMenuItem});
             this.Context_Structure.Name = "Context_Structure";
-            this.HexToolTip.SetToolTip(this.Context_Structure, resources.GetString("Context_Structure.ToolTip"));
-            this.Context_Structure.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.Context_Structure_ItemClicked);
+            resources.ApplyResources(this.Context_Structure, "Context_Structure");
+            this.Context_Structure.Opening += new System.ComponentModel.CancelEventHandler(this.Context_Structure_Opening);
             // 
-            // EditMenuItem
+            // editCellToolStripMenuItem
             // 
-            resources.ApplyResources(this.EditMenuItem, "EditMenuItem");
-            this.EditMenuItem.Name = "EditMenuItem";
+            this.editCellToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editStructValueToolStripMenuItem});
+            resources.ApplyResources(this.editCellToolStripMenuItem, "editCellToolStripMenuItem");
+            this.editCellToolStripMenuItem.Name = "editCellToolStripMenuItem";
+            this.editCellToolStripMenuItem.Tag = "Cell";
+            this.editCellToolStripMenuItem.Click += new System.EventHandler(this.editCellToolStripMenuItem_Click);
             // 
-            // defineCharToolStripMenuItem
+            // editStructValueToolStripMenuItem
             // 
-            resources.ApplyResources(this.defineCharToolStripMenuItem, "defineCharToolStripMenuItem");
-            this.defineCharToolStripMenuItem.Name = "defineCharToolStripMenuItem";
+            this.editStructValueToolStripMenuItem.Name = "editStructValueToolStripMenuItem";
+            resources.ApplyResources(this.editStructValueToolStripMenuItem, "editStructValueToolStripMenuItem");
+            this.editStructValueToolStripMenuItem.Tag = "Struct";
+            this.editStructValueToolStripMenuItem.Click += new System.EventHandler(this.editStructValueToolStripMenuItem_Click);
             // 
-            // defineByteToolStripMenuItem
+            // cellToolStripMenuItem
             // 
-            resources.ApplyResources(this.defineByteToolStripMenuItem, "defineByteToolStripMenuItem");
-            this.defineByteToolStripMenuItem.Name = "defineByteToolStripMenuItem";
+            this.cellToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hexValueToolStripMenuItem,
+            this.hexOffsetToolStripMenuItem,
+            this.decimalValueToolStripMenuItem,
+            this.decimalOffsetToolStripMenuItem,
+            this.structNameToolStripMenuItem,
+            this.structValueToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.structSizeToolStripMenuItem});
+            resources.ApplyResources(this.cellToolStripMenuItem, "cellToolStripMenuItem");
+            this.cellToolStripMenuItem.Name = "cellToolStripMenuItem";
+            this.cellToolStripMenuItem.Tag = "Cell";
             // 
-            // defineShortToolStripMenuItem
+            // hexValueToolStripMenuItem
             // 
-            resources.ApplyResources(this.defineShortToolStripMenuItem, "defineShortToolStripMenuItem");
-            this.defineShortToolStripMenuItem.Name = "defineShortToolStripMenuItem";
+            this.hexValueToolStripMenuItem.Name = "hexValueToolStripMenuItem";
+            resources.ApplyResources(this.hexValueToolStripMenuItem, "hexValueToolStripMenuItem");
+            this.hexValueToolStripMenuItem.Tag = "Cell";
+            this.hexValueToolStripMenuItem.Click += new System.EventHandler(this.hexValueToolStripMenuItem_Click);
             // 
-            // defineIntToolStripMenuItem
+            // hexOffsetToolStripMenuItem
             // 
-            resources.ApplyResources(this.defineIntToolStripMenuItem, "defineIntToolStripMenuItem");
-            this.defineIntToolStripMenuItem.Name = "defineIntToolStripMenuItem";
+            this.hexOffsetToolStripMenuItem.Name = "hexOffsetToolStripMenuItem";
+            resources.ApplyResources(this.hexOffsetToolStripMenuItem, "hexOffsetToolStripMenuItem");
+            this.hexOffsetToolStripMenuItem.Tag = "Cell";
+            this.hexOffsetToolStripMenuItem.Click += new System.EventHandler(this.hexOffsetToolStripMenuItem_Click);
             // 
-            // defineLongToolStripMenuItem
+            // decimalValueToolStripMenuItem
             // 
-            resources.ApplyResources(this.defineLongToolStripMenuItem, "defineLongToolStripMenuItem");
-            this.defineLongToolStripMenuItem.Name = "defineLongToolStripMenuItem";
+            this.decimalValueToolStripMenuItem.Name = "decimalValueToolStripMenuItem";
+            resources.ApplyResources(this.decimalValueToolStripMenuItem, "decimalValueToolStripMenuItem");
+            this.decimalValueToolStripMenuItem.Tag = "Cell";
+            this.decimalValueToolStripMenuItem.Click += new System.EventHandler(this.decimalValueToolStripMenuItem_Click);
             // 
-            // defineFloatToolStripMenuItem
+            // decimalOffsetToolStripMenuItem
             // 
-            resources.ApplyResources(this.defineFloatToolStripMenuItem, "defineFloatToolStripMenuItem");
-            this.defineFloatToolStripMenuItem.Name = "defineFloatToolStripMenuItem";
+            this.decimalOffsetToolStripMenuItem.Name = "decimalOffsetToolStripMenuItem";
+            resources.ApplyResources(this.decimalOffsetToolStripMenuItem, "decimalOffsetToolStripMenuItem");
+            this.decimalOffsetToolStripMenuItem.Tag = "Cell";
+            this.decimalOffsetToolStripMenuItem.Click += new System.EventHandler(this.decimalOffsetToolStripMenuItem_Click);
             // 
-            // defineObjectToolStripMenuItem
+            // structNameToolStripMenuItem
             // 
-            resources.ApplyResources(this.defineObjectToolStripMenuItem, "defineObjectToolStripMenuItem");
-            this.defineObjectToolStripMenuItem.Name = "defineObjectToolStripMenuItem";
+            this.structNameToolStripMenuItem.Name = "structNameToolStripMenuItem";
+            resources.ApplyResources(this.structNameToolStripMenuItem, "structNameToolStripMenuItem");
+            this.structNameToolStripMenuItem.Tag = "Struct";
+            this.structNameToolStripMenuItem.Click += new System.EventHandler(this.structNameToolStripMenuItem_Click);
             // 
-            // defineNameToolStripMenuItem
+            // structValueToolStripMenuItem
             // 
-            resources.ApplyResources(this.defineNameToolStripMenuItem, "defineNameToolStripMenuItem");
-            this.defineNameToolStripMenuItem.Name = "defineNameToolStripMenuItem";
+            this.structValueToolStripMenuItem.Name = "structValueToolStripMenuItem";
+            resources.ApplyResources(this.structValueToolStripMenuItem, "structValueToolStripMenuItem");
+            this.structValueToolStripMenuItem.Tag = "Struct";
+            this.structValueToolStripMenuItem.Click += new System.EventHandler(this.structValueToolStripMenuItem_Click);
             // 
-            // defineCodeToolStripMenuItem
+            // toolStripMenuItem1
             // 
-            resources.ApplyResources(this.defineCodeToolStripMenuItem, "defineCodeToolStripMenuItem");
-            this.defineCodeToolStripMenuItem.Name = "defineCodeToolStripMenuItem";
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
+            this.toolStripMenuItem1.Tag = "Struct";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.structHexSizeToolStripMenuItem_Click);
             // 
-            // defineIndexToolStripMenuItem
+            // structSizeToolStripMenuItem
             // 
-            resources.ApplyResources(this.defineIndexToolStripMenuItem, "defineIndexToolStripMenuItem");
-            this.defineIndexToolStripMenuItem.Name = "defineIndexToolStripMenuItem";
+            this.structSizeToolStripMenuItem.Name = "structSizeToolStripMenuItem";
+            resources.ApplyResources(this.structSizeToolStripMenuItem, "structSizeToolStripMenuItem");
+            this.structSizeToolStripMenuItem.Tag = "Struct";
+            this.structSizeToolStripMenuItem.Click += new System.EventHandler(this.structDecimalSizeToolStripMenuItem_Click);
             // 
-            // HexScrollBar
+            // toolStripSeparator1
             // 
-            resources.ApplyResources(this.HexScrollBar, "HexScrollBar");
-            this.HexScrollBar.Name = "HexScrollBar";
-            this.HexToolTip.SetToolTip(this.HexScrollBar, resources.GetString("HexScrollBar.ToolTip"));
-            this.HexScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HexScrollBar_Scroll);
-            this.HexScrollBar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HexScrollBar_KeyDown);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            // 
+            // defineStructToolStripMenuItem
+            // 
+            this.defineStructToolStripMenuItem.Name = "defineStructToolStripMenuItem";
+            resources.ApplyResources(this.defineStructToolStripMenuItem, "defineStructToolStripMenuItem");
+            this.defineStructToolStripMenuItem.Tag = "Cell";
+            this.defineStructToolStripMenuItem.Click += new System.EventHandler(this.defineStructToolStripMenuItem_Click);
+            // 
+            // HexViewScrollBar
+            // 
+            resources.ApplyResources(this.HexViewScrollBar, "HexViewScrollBar");
+            this.HexViewScrollBar.Name = "HexViewScrollBar";
+            this.HexViewScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HexScrollBar_Scroll);
+            // 
+            // removeStructToolStripMenuItem
+            // 
+            this.removeStructToolStripMenuItem.Name = "removeStructToolStripMenuItem";
+            resources.ApplyResources(this.removeStructToolStripMenuItem, "removeStructToolStripMenuItem");
+            this.removeStructToolStripMenuItem.Tag = "Struct";
+            this.removeStructToolStripMenuItem.Click += new System.EventHandler(this.removeStructToolStripMenuItem_Click);
             // 
             // HexViewerControl
             // 
-            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.BackColor = System.Drawing.SystemColors.Window;
-            this.Controls.Add(this.HexScrollBar);
             this.Controls.Add(splitContainer1);
+            resources.ApplyResources(this, "$this");
             this.Name = "HexViewerControl";
-            this.HexToolTip.SetToolTip(this, resources.GetString("$this.ToolTip"));
-            this.Resize += new System.EventHandler(this.UserControl_HexView_Resize);
+            this.Load += new System.EventHandler(this.HexViewerControl_Load);
+            this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HexViewerControl_Scroll);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(splitContainer1)).EndInit();
             splitContainer1.ResumeLayout(false);
             this.DataInfoPanel.ResumeLayout(false);
             this.DataInfoPanel.PerformLayout();
+            panel1.ResumeLayout(false);
             this.Context_Structure.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.VScrollBar HexScrollBar;
-		private HexViewerPanel HexLinePanel;
+		private System.Windows.Forms.VScrollBar HexViewScrollBar;
+		private HexViewerPanel HexViewPanel;
 		private System.Windows.Forms.TextBox DissambledChar;
 		private System.Windows.Forms.TextBox DissambledByte;
 		private System.Windows.Forms.TextBox DissambledShort;
@@ -493,19 +500,22 @@
 		private System.Windows.Forms.TextBox DissambledObject;
 		private System.Windows.Forms.TextBox DissambledIndex;
 		private System.Windows.Forms.ContextMenuStrip Context_Structure;
-		private System.Windows.Forms.ToolStripMenuItem defineCharToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem defineByteToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem defineShortToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem defineIntToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem defineLongToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem defineFloatToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem defineObjectToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem defineNameToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem defineCodeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem defineIndexToolStripMenuItem;
 		private System.Windows.Forms.TextBox DissambledStruct;
 		private System.Windows.Forms.ToolTip HexToolTip;
         private System.Windows.Forms.Panel DataInfoPanel;
-        private System.Windows.Forms.ToolStripMenuItem EditMenuItem;
-	}
+        private System.Windows.Forms.ToolStripMenuItem editCellToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cellToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem hexValueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hexOffsetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem decimalValueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem decimalOffsetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem structNameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem structValueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem structSizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem editStructValueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem defineStructToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeStructToolStripMenuItem;
+    }
 }

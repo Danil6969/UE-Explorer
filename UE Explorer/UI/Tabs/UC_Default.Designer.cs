@@ -1,4 +1,7 @@
-﻿namespace UEExplorer.UI.Tabs
+﻿using System.Windows.Forms;
+using UEExplorer.UI.Panels;
+
+namespace UEExplorer.UI.Tabs
 {
 	partial class UC_Default
 	{
@@ -15,8 +18,6 @@
 		{
 			if( disposing && (components != null) )
 			{
-                DefaultPage.Dispose();
-                panel1.Dispose();
 				components.Dispose();
 			}
 			base.Dispose( disposing );
@@ -28,51 +29,24 @@
 		/// Required method for Designer support - do not modify 
 		/// the contents of this method with the code editor.
 		/// </summary>
-		protected override void InitializeComponent()
+		protected void InitializeComponent()
 		{
-			this.DefaultPage = new System.Windows.Forms.WebBrowser();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.panel1.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// DefaultPage
-			// 
-			this.DefaultPage.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.DefaultPage.Location = new System.Drawing.Point( 0, 0 );
-			this.DefaultPage.Margin = new System.Windows.Forms.Padding( 0 );
-			this.DefaultPage.Name = "DefaultPage";
-			this.DefaultPage.ScriptErrorsSuppressed = true;
-			this.DefaultPage.Size = new System.Drawing.Size( 0, 0 );
-			this.DefaultPage.TabIndex = 2;
-			this.DefaultPage.Url = new System.Uri( "", System.UriKind.Relative );
-			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add( this.DefaultPage );
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point( 0, 0 );
-			this.panel1.Margin = new System.Windows.Forms.Padding( 0 );
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size( 0, 0 );
-			this.panel1.TabIndex = 3;
-			// 
-			// UC_Default
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.Controls.Add( this.panel1 );
-			this.Name = "UC_Default";
-			this.Size = new System.Drawing.Size( 0, 0 );
-			this.panel1.ResumeLayout( false );
-			this.ResumeLayout( false );
+            this.SuspendLayout();
+            // 
+            // UC_Default
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.Name = "UC_Default";
+            this.Size = new System.Drawing.Size(349, 337);
+            this.Load += new System.EventHandler(this.UC_Default_Load);
 
-		}
 
-		#endregion
+            this.ResumeLayout(false);
+        }
 
-		private System.Windows.Forms.WebBrowser DefaultPage;
-		private System.Windows.Forms.Panel panel1;
+        #endregion
 
 	}
 }
