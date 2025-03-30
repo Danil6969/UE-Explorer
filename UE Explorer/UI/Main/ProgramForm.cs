@@ -465,6 +465,7 @@ namespace UEExplorer.UI
 
         public static void SetStatus(string status)
         {
+            if (Status == null) return;
             Status.Text = status;
             Status.Owner.Refresh();
         }
@@ -483,6 +484,7 @@ namespace UEExplorer.UI
 
         public static void ResetValue()
         {
+            if (Loading == null) return;
             Loading.Visible = false;
             Loading.Value = 0;
         }
