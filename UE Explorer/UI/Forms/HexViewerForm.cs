@@ -263,7 +263,6 @@ namespace UEExplorer.UI.Forms
 
         private bool ReplaceBuffer(IBuffered target, byte[] buffer)
         {
-            target.GetBuffer().Dispose();
             string packageFilePath = _PackageFilePath;
             using (var package = UnrealLoader.LoadPackage(packageFilePath, FileAccess.ReadWrite))
             {
