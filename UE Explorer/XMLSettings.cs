@@ -27,7 +27,7 @@ namespace UEExplorer
         public bool bSuppressComments;
         public string PreBeginBracket = "%NEWLINE%%TABS%";
         public string PreEndBracket = "%NEWLINE%%TABS%";
-        public int Indention = 4;
+        public int Indention = 3;
         public List<string> VariableTypes;
         #endregion
 
